@@ -9,38 +9,42 @@ class UDPClient
 {
     public static void main(String args[]) throws Exception
     {
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader innFraBruker = new BufferedReader(new InputStreamReader(System.in));
+        //Leser inn data fra bruker
         DatagramSocket clientSocket = new DatagramSocket();
-        InetAddress IPAddress = InetAddress.getByName("localhost");
+        // KLientsokket,
+        InetAddress IPAddresse = InetAddress.getByName("localhost");
+        //Får den lokale Ip-adressen
         byte[] sendData = new byte[1024];
         byte[] receiveData = new byte[1024];
 
         System.out.println("Skriv inn en nettadresse der du ønsker å finne email: ");
-        String sentence = inFromUser.readLine();
-        sendData = sentence.getBytes();
+        String setning = innFraBruker.readLine(); // Leser inn data fra bruker
+        sendData = setning.getBytes(); // Setter data inn som bytes
 
         //Protokoll for sending
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-        clientSocket.send(sendPacket);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddresse, 9876);
+        clientSocket.send(sendPacket); //Lager en datagrampakke og sender denne fra Ip-adresse til port
 
         //Protokoll for mottak
-        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        clientSocket.receive(receivePacket);
+        DatagramPacket mottakData = new DatagramPacket(receiveData, receiveData.length);
+        clientSocket.receive(mottakData);
+        //Protokoll for mottak, venter her på respons
 
-        String modifiedSentence = new String(receivePacket.getData());
-        System.out.println("Fra server: " + modifiedSentence);
-
-
-
-
-        int minInt=Integer.parseInt(modifiedSentence.trim());
-        System.out.println(modifiedSentence);
+        String serverSetning = new String(mottakData.getData());
+        System.out.println("Fra server: " + serverSetning);
 
 
 
+
+        int minInt=Integer.parseInt(serverSetning.trim());
+
+
+
+        //Bruker så en løkke for å håndtere responsen fra server
         while (true) {
              if (minInt==0) {
-                printWebside(sentence);
+                printWebside(serverSetning);
                 break;
             }
 

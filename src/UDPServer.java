@@ -18,7 +18,7 @@ class UDPServer
 {
     public static void main(String args[]) throws Exception
     {
-        DatagramSocket serverSocket = new DatagramSocket(9876);
+        DatagramSocket serverSocket = new DatagramSocket(9876); //Definerer port som mottar data
         byte[] receiveData = new byte[1024];
         byte[] sendData = new byte[1024];
         while(true)
@@ -35,7 +35,6 @@ class UDPServer
              String s = seEtterWebside(motattData);
             System.out.println(s);
              sendData=s.getBytes();
-
 
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
             serverSocket.send(sendPacket);
